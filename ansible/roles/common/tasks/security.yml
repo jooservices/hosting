@@ -1,0 +1,64 @@
+---
+#- name: Enforce user passord policy
+#  block:
+#    - name: enforce min lengh passwd
+#      pamd:
+#        name: system-auth
+#        type: password
+#        module_path: pam_pwquality.so
+#        control: requisite
+#        module_arguments: "dcredit=-1 ucredit=-1 ocredit=-1 lcredit=0 minlen=8"
+#        new_control: required
+#        backup: yes
+#        state: updated
+#
+#    - name: Enforce remember time
+#      pamd:
+#        name: system-auth
+#        type: password
+#        module_path: pam_unix.so
+#        control: sufficient
+#        module_arguments: "sha512 shadow nullok try_first_pass use_authtok remember=2"
+#        new_control: sufficient
+#        backup: yes
+#        state: updated
+
+- name: Enforce user to change their password when time reach
+  template:
+    src: etc/login.defs.j2
+    dest: /etc/login.defs
+
+- name: Allow only root to control cron
+  file:
+    path: "{{ item }}"
+    mode: 0700
+    owner: root
+    group: root
+    recurse: yes
+  with_items:
+    - /etc/cron.hourly
+    - /etc/cron.daily
+    - /etc/cron.weekly
+    - /etc/cron.monthly
+
+- name: Set session timeout for unused session
+  blockinfile:
+    dest: /etc/profile
+    block: |
+      TMOUT=300
+      readonly TMOUT
+      export TMOUT
+
+- name: Disable selinux
+  selinux:
+    state: disabled
+  notify: reboot reminder
+
+- name: tcp_wrappers for sshd services
+  template:
+    src: etc/hosts.allow.j2
+    dest: /etc/hosts.allow
+    owner: root
+    group: root
+    mode: 0644
+  #when: (pub_interface_enabled is defined and pub_interface_enabled == "1")

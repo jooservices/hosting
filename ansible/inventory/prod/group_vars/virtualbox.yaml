@@ -1,0 +1,30 @@
+apt_packages:
+  - net-tools
+
+disable_apt_update: true
+
+swapoff: false
+
+ulimit:
+  nofile: 655350
+  core: unlimited
+  nproc: unlimited
+  
+
+sysctl_file: /etc/sysctl.d/60-custom-tunning.conf
+
+sysctl_config:
+  fs.file-max: 655350
+  fs.inotify.max_queued_events: 16384
+  fs.inotify.max_user_instances: 8192
+  fs.inotify.max_user_watches: 12288
+  kernel.core_pattern: "/var/coredump/core.%e.%p.%t"
+  net.bridge.bridge-nf-call-iptables: 1
+  net.ipv4.conf.all.rp_filter: 1
+  net.ipv4.conf.default.rp_filter: 1
+  net.ipv4.conf.all.arp_filter: 0
+  net.ipv4.conf.default.arp_filter: 0
+  net.ipv4.ip_forward: 1
+  net.ipv4.ip_local_port_range: 1024 65535
+  net.bridge.bridge-nf-call-ip6tables: 1
+  net.ipv6.conf.all.forwarding: 1

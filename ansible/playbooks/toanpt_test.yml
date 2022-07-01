@@ -1,0 +1,12 @@
+- hosts: toanpt_test
+  become: yes
+  roles:
+  #- { role: common, tags: common }
+  #- { role: node-exporter, tags: node-exporter }
+  #- { role: redis-exporter, tags: redis-exporter }
+  #- { role: memcached-exporter, tags: memcached-exporter }
+  #- { role: redis, tags: redis }
+  #- { role: mongodb-exporter, tags: mongodb-exporter }
+  #- { role: postgres-exporter, tags: postgres-exporter }
+  #- { role: nginx, tags: nginx }
+  - { role: alertmanager, tags: alertmanager }

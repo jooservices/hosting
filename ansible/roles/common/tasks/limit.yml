@@ -1,0 +1,40 @@
+---
+- name: limits - raise fd soft limits
+  pam_limits:
+    dest: /etc/security/limits.conf
+    domain: "*"
+    limit_item: "nofile"
+    limit_type: "soft"
+    value: "{{ ulimit['nofile'] }}"
+  tags:
+    - limit
+
+- name: limits - raise fd hard limits
+  pam_limits:
+    dest: /etc/security/limits.conf
+    domain: "*"
+    limit_item: "nofile"
+    limit_type: "hard"
+    value: "{{ ulimit['nofile'] }}"
+  tags:
+    - limit
+
+- name: limits - raise nproc soft limits
+  pam_limits:
+    dest: /etc/security/limits.conf
+    domain: "*"
+    limit_item: "nproc"
+    limit_type: "soft"
+    value: "{{ ulimit['noproc'] }}"
+  tags:
+    - limit
+
+- name: limits - raise nproc hard limits
+  pam_limits:
+    dest: /etc/security/limits.conf
+    domain: "*"
+    limit_item: "nproc"
+    limit_type: "hard"
+    value: "{{ ulimit['noproc'] }}"
+  tags:
+    - limit

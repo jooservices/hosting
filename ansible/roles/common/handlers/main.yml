@@ -1,0 +1,7 @@
+---
+- name: disable swap space
+  shell: swapoff -a
+  when: swapoff | bool
+
+- name: reload sysctl
+  shell: sysctl --system

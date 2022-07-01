@@ -1,0 +1,7 @@
+pre-commit
+ansible
+ansible-lint
+virtualenv
+jmespath
+python-gilt
+mitogen==0.2.9

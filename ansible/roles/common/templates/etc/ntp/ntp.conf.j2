@@ -1,0 +1,8 @@
+driftfile /var/lib/ntp/drift
+ 
+# Specify NTP servers.
+server {{ ntp_server }}
+ 
+# Local users may obtain data from NTP servers.
+restrict 127.0.0.1
+restrict ::1

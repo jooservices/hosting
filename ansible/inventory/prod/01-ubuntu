@@ -1,0 +1,10 @@
+[host_ubuntu]
+workstation
+
+[vm]
+vm01
+
+[toanpt_test]
+toanpr
+
+

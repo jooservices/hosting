@@ -1,0 +1,20 @@
+---
+- name: setup basic configurations
+  import_tasks: base.yml
+  tags: base
+
+- name: tunning modules values
+  import_tasks: modules.yml
+  tags: modules
+
+- name: config limit.conf
+  import_tasks: limit.yml
+  tags: limit
+
+- name: tunning sysctl values
+  import_tasks: sysctl.yml
+  tags: sysctl
+
+- name: Reboot reminder
+  debug:
+    msg: ">> NOTICE: reboot is required for some settings to be effected (selinux, update 1st..)"

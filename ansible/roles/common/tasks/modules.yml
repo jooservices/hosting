@@ -1,0 +1,8 @@
+---
+- name: save kernel modules
+  lineinfile:
+    dest: /etc/modules
+    line: "{{ item }}"
+  with_items: "{{ kernel_modules }}"
+  tags:
+    - modules

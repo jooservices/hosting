@@ -1,0 +1,48 @@
+- name: set timezone to Asia/Saigon
+  file:
+    src: /usr/share/zoneinfo/Asia/Saigon
+    dest: /etc/localtime
+    state: link
+    force: yes
+
+- name: Synchonized hwclock to sysclock
+  timezone:
+    name: Asia/Saigon
+    hwclock: UTC
+
+- name: cronjob to synchronize hardware system time
+  cron:
+    name: "hwclock synchronization"
+    minute: "46"
+    job: "/sbin/hwclock --systohc >/dev/null 2>&1"
+
+- name: cronjob to set locale to en_US.UTF-8
+  cron:
+    name: "{{ item }}"
+    env: yes
+    value: "en_US.UTF-8"
+  with_items:
+    - LANG
+    - LC_ALL
+
+- name: Config chrony for synchonize time
+  template:
+    src: etc/chrony.conf.j2
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart chrony
+
+##Move 2 use chrony
+#- name: cronjob to run ntpdate hourly
+#  cron:
+#    name: "ntpdate hourly"
+#    minute: "2"
+#    job: "/usr/sbin/ntpdate {{ internal_ntp1_ip }} >> /var/log/cron.ntpdate.log 2>&1"
+
+#- name: cronjob to run ntpdate hourly 2
+#  cron:
+#    name: "ntpdate hourly 2"
+#    minute: "34"
+#    job: "/usr/sbin/ntpdate {{ internal_ntp2_ip }} >> /var/log/cron.ntpdate.log 2>&1"

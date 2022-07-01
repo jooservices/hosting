@@ -1,0 +1,85 @@
+---
+- name: Set hostname
+  hostname:
+    #name: "{{ inventory_hostname }}.{{ svr_managed_domain }}"
+    name: "{{ inventory_hostname }}"
+
+- name: Disable swapoff
+  shell: swapoff -a
+  when: swapoff | bool
+
+- name: Disable swapoff permanently
+  replace:
+    path: /etc/fstab
+    regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+    replace: '#\1\2\3swap\4'
+    backup: yes
+  when: swapoff | bool
+
+- name: Set default limit to /etc/systemd/system.conf 
+  lineinfile: dest=/etc/systemd/system.conf
+              regexp="DefaultLimitNOFILE"
+              line="DefaultLimitNOFILE=655350"
+              state=present
+
+- name: Set timezone to {{ timezone }} 
+  timezone:
+    name: "{{ timezone }}"
+  when: timezone is defined
+
+- name: Set timezone to UTC
+  when: ansible_date_time.tz != 'UTC'
+  command: timedatectl set-timezone UTC
+
+- name: Configure ntp file and restart
+  template:
+    src: etc/ntp/ntp.conf.j2
+    dest: /etc/ntp.conf
+    backup: yes
+  when: ntp_server is defined
+
+- name: Install base packages
+  apt: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ apt_packages }}"
+  tags:
+    - packages
+
+- name: Stop services
+  service:
+    name: "{{ item }}"
+    state: stopped
+  with_items:
+    - apt-daily.timer
+    - apt-daily-upgrade.timer
+  when: disable_apt_update
+  tags:
+    - apt
+
+- name: Disable services
+  service:
+    name: "{{ item }}"
+    enabled: no
+  with_items:
+    - apt-daily.timer
+    - apt-daily-upgrade.timer
+  when: disable_apt_update
+  tags:
+    - apt
+
+- name: Verify if br_netfilter module exists
+  command: "modinfo br_netfilter"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/sbin"  # Make sure we can workaround RH's conservative path management
+  register: modinfo_br_netfilter
+  failed_when: modinfo_br_netfilter.rc not in [0, 1]
+  changed_when: false
+  check_mode: no
+
+- name: Enable br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+  when: modinfo_br_netfilter.rc == 0
