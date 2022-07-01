@@ -53,12 +53,6 @@
     src: "{{ role_path }}/files/alertmanager.yml"
     dest: /etc/alertmanager/alertmanager.yml
 
-- name: Copy config file
-  copy:
-    src: "{{ role_path }}/files/template-notification.tmpl"
-    dest:/etc/alertmanager/template-notification.tmpl
-
-
 - name: Copy systemd init file
   template:
     src: init.service.j2
