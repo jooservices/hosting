@@ -1,0 +1,5 @@
+---
+- name: restart memcached_exporter
+  service:
+    name: memcached_exporter
+    state: restarted

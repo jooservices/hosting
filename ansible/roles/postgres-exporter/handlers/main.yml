@@ -1,0 +1,5 @@
+---
+- name: restart postgresql_exporter
+  service:
+    name: postgresql_exporter
+    state: restarted

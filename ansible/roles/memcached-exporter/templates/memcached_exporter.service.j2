@@ -1,0 +1,10 @@
+[Unit]
+Description=RedisExporter
+
+[Service]
+TimeoutStartSec=0
+User=memcached_exporter
+ExecStart={{ memcached_exporter_bin_path }} {{ memcached_exporter_options }}
+
+[Install]
+WantedBy=multi-user.target

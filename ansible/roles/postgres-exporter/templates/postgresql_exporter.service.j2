@@ -1,0 +1,11 @@
+[Unit]
+Description=PostgesqlExporter
+
+[Service]
+Environment="DATA_SOURCE_NAME=postgresql://postgres_exporter:password@localhost:5432/postgres?sslmode=disable"
+TimeoutStartSec=0
+User=postgresql_exporter
+ExecStart={{ postgresql_exporter_bin_path }} {{ postgresql_exporter_options }}
+
+[Install]
+WantedBy=multi-user.target

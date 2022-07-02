@@ -1,0 +1,10 @@
+[Unit]
+Description=MongoDbExporter
+
+[Service]
+TimeoutStartSec=0
+User=mongodb_exporter
+ExecStart={{ mongodb_exporter_bin_path }} {{ mongodb_exporter_options }}
+
+[Install]
+WantedBy=multi-user.target

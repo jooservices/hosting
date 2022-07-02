@@ -1,0 +1,58 @@
+---
+- name: Check current postgresql_exporter version.
+  command: "{{ postgresql_exporter_bin_path }} --version"
+  failed_when: false
+  changed_when: false
+  register: postgresql_exporter_version_check
+
+- name: Download and unarchive postgresql_exporter into temporary location.
+  unarchive:
+    src: "{{ postgresql_exporter_download_url }}"
+    dest: /tmp
+    remote_src: true
+    mode: 0755
+  when: >
+    postgresql_exporter_version_check.stdout is not defined
+    or postgresql_exporter_version not in postgresql_exporter_version_check.stdout
+  register: postgresql_exporter_download_check
+
+- name: Move postgresql_exporter binary into place.
+  copy:
+    src: "/tmp/postgres_exporter-{{ postgresql_exporter_version }}.linux-{{ postgresql_exporter_arch }}/postgres_exporter"
+    dest: "{{ postgresql_exporter_bin_path }}"
+    mode: 0755
+    remote_src: true
+  notify: restart postgresql_exporter
+  when: postgresql_exporter_download_check is changed
+
+- name: Create postgresql_exporter user.
+  user:
+    name: postgresql_exporter
+    shell: /sbin/nologin
+    state: present
+
+- name: Copy the postgresql_exporter systemd unit file.
+  template:
+    src: postgresql_exporter.service.j2
+    dest: /etc/systemd/system/postgresql_exporter.service
+    mode: 0644
+  register: postgresql_exporter_service
+
+- name: Reload systemd daemon if unit file is changed.
+  systemd:
+    daemon_reload: true
+  notify: restart postgresql_exporter
+  when: postgresql_exporter_service is changed
+
+- name: Ensure postgresql_exporter is running and enabled at boot.
+  service:
+    name: postgresql_exporter
+    state: "{{ postgresql_exporter_state }}"
+    enabled: "{{ postgresql_exporter_enabled }}"
+
+- name: Verify postgresql_exporter is responding to requests.
+  uri:
+    url: http://localhost:9100/
+    return_content: true
+  register: metrics_output
+  failed_when: "'Metrics' not in metrics_output.content"

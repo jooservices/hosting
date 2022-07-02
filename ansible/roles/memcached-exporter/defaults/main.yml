@@ -1,0 +1,12 @@
+---
+# See available releases: https://github.com/prometheus/memcached_exporter/releases
+memcached_exporter_version: '0.10.0'
+memcached_exporter_arch: 'amd64'
+memcached_exporter_download_url: https://github.com/prometheus/memcached_exporter/releases/download/v{{ memcached_exporter_version }}/memcached_exporter-{{ memcached_exporter_version }}.linux-{{ memcached_exporter_arch }}.tar.gz
+
+memcached_exporter_bin_path: /usr/local/bin/memcached_exporter
+
+memcached_exporter_options: ''
+
+memcached_exporter_state: started
+memcached_exporter_enabled: true

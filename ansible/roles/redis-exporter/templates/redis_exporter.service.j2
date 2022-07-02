@@ -1,0 +1,10 @@
+[Unit]
+Description=RedisExporter
+
+[Service]
+TimeoutStartSec=0
+User=redis_exporter
+ExecStart={{ redis_exporter_bin_path }} {{ redis_exporter_options }}
+
+[Install]
+WantedBy=multi-user.target
