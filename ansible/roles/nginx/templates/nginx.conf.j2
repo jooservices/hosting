@@ -73,7 +73,34 @@ http {
 {% block http_includes %}
     include {{ nginx_conf_path }}/*.conf;
 {% if nginx_conf_path != nginx_vhost_path %}
-    include {{ nginx_vhost_path }}/*;
+    #include {{ nginx_vhost_path }}/*;
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name _;
+
+        location ~ \.php$ {
+                root /var/www/html;
+                try_files $uri =404;
+                fastcgi_pass unix:/run/php/php-fpm.sock;
+                include        fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        }
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+        #}
+    }
+
 {% endif %}
 {% endblock %}
 

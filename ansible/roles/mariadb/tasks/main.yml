@@ -1,0 +1,10 @@
+---
+
+- import_tasks: install.yml
+  tags: [mariadb]
+- import_tasks: configure.yml
+  tags: [mariadb]
+- import_tasks: databases.yml
+  tags: [mariadb]
+- import_tasks: users.yml
+  tags: [mariadb]

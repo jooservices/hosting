@@ -8,5 +8,10 @@
   #- { role: redis, tags: redis }
   #- { role: mongodb-exporter, tags: mongodb-exporter }
   #- { role: postgres-exporter, tags: postgres-exporter }
-  #- { role: nginx, tags: nginx }
-  - { role: alertmanager, tags: alertmanager }
+  - { role: nginx, tags: nginx }
+  #- { role: alertmanager, tags: alertmanager }
+  #- { role: memcached, tags: memcached }
+  #- { role: mongodb, tags: mongodb }
+  #- { role: mariadb, tags: mariadb }
+  #- { role: postgresql, tags: postgresql }
+  - { role: php, tags: php }
