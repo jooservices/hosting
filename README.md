@@ -231,3 +231,39 @@ Link: http://alertmanager.xcrawler.net/#/alerts
 4. Ref:
 
 Collection of alerting rules: https://awesome-prometheus-alerts.grep.to/rules.html
+
+#### Nginx config
+> With SSL-Pass thru, Nginx is dealing in encrypted TCP traffic - it does not decrypt it, and cannot read information about the HTTP request. It's job is merely to send TCP packets to other servers based on it's load balancing configuration. This has some side affects - notably that Nginx can't figure out what server to send traffic to based on the Host header (although SNI can get around that - that's a topic for another day).
+1. Add new website(Example will need add new website with name ```test.xcrawler.net```)
+* Edit proxy config at: ```/etc/nginx/proxy.conf```
+* Add new map and upstream
+```
+    map $ssl_preread_server_name $targetBackend {
+        develop.coffeeschool.vn   shared;
+        develop.baristaschool.vn  shared;
+        phongcachbarista.vn       shared;
+        xcrawler.net  xcrawler;
+        test.xcrawler.net  testxcrawler;
+    }
+```
+```
+upstream testxcrawler {
+        server 192.168.1.4:443 weight=5;
+
+        ## Add more if loadbalancing needed
+        server 192.168.1.5:443 max_fails=3 fail_timeout=30s;
+        server 192.168.1.6:443 ;
+    }
+```
+
+![](https://i.imgur.com/8onPJ1U.png)
+
+2. Verify config and reload.
+```
+root@workstation:/home/soulevil# /usr/sbin/nginx -t -c /etc/nginx/nginx.conf
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@workstation:/home/soulevil# systemctl reload nginx
+```
+
+3. REF
