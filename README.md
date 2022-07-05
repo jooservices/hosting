@@ -22,7 +22,12 @@
   - [x] Set hostname
   - [x] Allow only root to control cron
   - [x] Disable selinux
-  
+
+## App usage
+- Grafana : Display graph for monitoring
+- Prometheus :
+- Alert : Sending alert
+- Exporter : Read data from `sources` and export for 3rd party
 
 ## How to use Ansible 
 
