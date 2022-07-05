@@ -22,7 +22,6 @@
   - [x] Set hostname
   - [x] Allow only root to control cron
   - [x] Disable selinux
-  - [x] Postgres-exporter
   
 
 ## How to use Ansible 
