@@ -25,7 +25,7 @@
 
 ## App usage
 - Grafana : Display graph for monitoring
-- Prometheus :
+- Prometheus : Collect data from exporter and queryable by another services
 - Alert : Sending alert
 - Exporter : Read data from `sources` and export for 3rd party
 
