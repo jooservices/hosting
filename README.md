@@ -54,71 +54,11 @@ job: api-server
   instance 3: 5.6.7.8:5670
   instance 4: 5.6.7.8:5671
 ````
-## How to use Ansible 
 
-1. Install ansible and require package use pip(3):
-```
-pip3 install -r requirements.txt
-```
-![](https://i.imgur.com/BiPnIcB.png)
+### Add new metrics to Prometheus
 
-2. Run Playbook
-
-Update inventory host : ```inventory/prod/00-regional ```
-```
-[host]
-workstation            ansible_host=115.79.25.9        ansible_port=6922     ansible_user=soulevil
-vm01                   ansible_host=192.168.1.10        ansible_port=22     ansible_user=soulevil
-
-```
-
-```inventory/prod/01-ubuntu```
-```
-[host_ubuntu]
-workstation
-
-[vm]
-vm01
-
-[toanpt_test]
-toanpr
-
-
-
-```
-
-Update playbook(list component deploy to server): ```playbooks/host_ubuntu.yml ```
-
-```
-- hosts: host_ubuntu
-  become: yes
-  roles:
-  - { role: common, tags: common }
-  - { role: node-exporter, tags: node-exporter }
-  - { role: redis-exporter, tags: redis-exporter }
-  - { role: memcached-exporter, tags: memcached-exporter }
-  - { role: redis, tags: redis }
-  - { role: mongodb-exporter, tags: mongodb-exporter }
-  - { role: postgres-exporter, tags: postgres-exporter }
-```
-
-Verify: 
-```
-ansible-playbook playbooks/host_ubuntu.yml -i inventory/prod  --check --diff
-```
-
-![](https://i.imgur.com/b8rpTJH.png)
-
-Apply:
-
-```
-ansible-playbook playbooks/host_ubuntu.yml -i inventory/prod
-```
-![](https://i.imgur.com/NDiCfkA.png)
-
-## Add new metrics to pormetheus
-
-* Edit config / update target on prometheus
+* Edit [config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) / update target on prometheus
+* Validate config file `promtool check config prometheus.yml` 
 ```
 vim /etc/prometheus/prometheus.yml
 ```
@@ -260,7 +200,7 @@ Link: http://alertmanager.xcrawler.net/#/alerts
 
 Collection of alerting rules: https://awesome-prometheus-alerts.grep.to/rules.html
 
-#### Nginx config
+## Nginx config
 > With SSL-Pass thru, Nginx is dealing in encrypted TCP traffic - it does not decrypt it, and cannot read information about the HTTP request. It's job is merely to send TCP packets to other servers based on it's load balancing configuration. This has some side affects - notably that Nginx can't figure out what server to send traffic to based on the Host header (although SNI can get around that - that's a topic for another day).
 1. Add new website(Example will need add new website with name ```test.xcrawler.net```)
 * Edit proxy config at: ```/etc/nginx/proxy.conf```
@@ -295,3 +235,69 @@ root@workstation:/home/soulevil# systemctl reload nginx
 ```
 
 3. REF
+
+## [Install Ansible](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-ansible-on-ubuntu-20-04)
+- `sudo apt install ansible`
+## How to use Ansible 
+
+1. Install ansible and require package use pip(3):
+```
+pip3 install -r requirements.txt
+```
+![](https://i.imgur.com/BiPnIcB.png)
+
+2. Run Playbook
+
+Update inventory host : ```inventory/prod/00-regional ```
+```
+[host]
+workstation            ansible_host=115.79.25.9        ansible_port=6922     ansible_user=soulevil
+vm01                   ansible_host=192.168.1.10        ansible_port=22     ansible_user=soulevil
+
+```
+
+```inventory/prod/01-ubuntu```
+```
+[host_ubuntu]
+workstation
+
+[vm]
+vm01
+
+[toanpt_test]
+toanpr
+
+
+
+```
+
+Update playbook(list component deploy to server): ```playbooks/host_ubuntu.yml ```
+
+```
+- hosts: host_ubuntu
+  become: yes
+  roles:
+  - { role: common, tags: common }
+  - { role: node-exporter, tags: node-exporter }
+  - { role: redis-exporter, tags: redis-exporter }
+  - { role: memcached-exporter, tags: memcached-exporter }
+  - { role: redis, tags: redis }
+  - { role: mongodb-exporter, tags: mongodb-exporter }
+  - { role: postgres-exporter, tags: postgres-exporter }
+```
+
+Verify: 
+```
+ansible-playbook playbooks/host_ubuntu.yml -i inventory/prod  --check --diff
+```
+
+![](https://i.imgur.com/b8rpTJH.png)
+
+Apply:
+
+```
+ansible-playbook playbooks/host_ubuntu.yml -i inventory/prod
+```
+![](https://i.imgur.com/NDiCfkA.png)
+
+
