@@ -31,14 +31,29 @@
 
 ![image](https://user-images.githubusercontent.com/2688707/177316892-e3d3b862-6f82-4fa9-a56d-e53a4502ef08.png)
 
-## Prometheus
-https://github.com/prometheus/prometheus/
+## [Prometheus](https://github.com/prometheus/prometheus/)
 
-https://prometheus.io/docs/prometheus/latest/getting_started/
+> Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
+> Prometheus collects and stores its metrics as time series data, i.e. metrics information is stored with the timestamp at which it was recorded, alongside optional key-value pairs called labels.
 
-- How to install
-https://computingforgeeks.com/install-prometheus-server-on-debian-ubuntu-linux/
+- [What's it](https://prometheus.io/docs/prometheus/latest/getting_started/)
+- [How to install](https://computingforgeeks.com/install-prometheus-server-on-debian-ubuntu-linux/)
+- [Install with Ansible](https://github.com/cloudalchemy/ansible-prometheus)
+- Locations
+  - Service `/etc/systemd/system/prometheus.service`
+    - `--web.listen-address=0.0.0.0:9090 \` For moment we are using bind `0.0.0.0`. But should be `127.0.0.1`
+  - Nginx `/etc/nginx/conf.d/redirect.conf`
 
+### Terms
+- [Jobs & Instances](https://prometheus.io/docs/concepts/jobs_instances/)
+
+````
+job: api-server
+  instance 1: 1.2.3.4:5670
+  instance 2: 1.2.3.4:5671
+  instance 3: 5.6.7.8:5670
+  instance 4: 5.6.7.8:5671
+````
 ## How to use Ansible 
 
 1. Install ansible and require package use pip(3):
