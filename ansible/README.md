@@ -37,7 +37,20 @@ pip3 install -r requirements.txt
 ```
 ![](https://i.imgur.com/BiPnIcB.png)
 
-2. Run Playbook
+2. Use playbook
+- Update `inventory/inventory.yaml` with the list of hosts
+- Update or adding files to `playbooks/` for the lists of roles will be executed
+- Execute compare
+````
+ansible-playbook playbooks/<file>.yml -i inventory/prod  --check --diff
+````
+- Apply
+
+````
+ansible-playbook playbooks/<file>.yml -i inventory/prod
+````
+
+2. Run Playbook [ Old ]
 
 Update inventory host : ```inventory/prod/00-regional ```
 ```
@@ -57,7 +70,6 @@ vm01
 
 [toanpt_test]
 toanpr
-
 
 
 ```
