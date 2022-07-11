@@ -1,2 +1,4 @@
 ---
 timezone: Asia/Ho_Chi_Minh
+ansible_port: 22
+ansible_user: soulevil

@@ -1,0 +1,19 @@
+clients: # Will be used in playbook.yaml
+  hosts:
+    staging:
+      ansible_host: 192.168.1.2 # Make sure added public key for SSH before execute
+
+xcrawlers:
+  hosts:
+    primary:
+      ansible_host: 192.168.1.4
+
+server:
+  hosts:
+    workstation:
+      ansible_host: 192.168.1.10
+
+tests: # Testing servers
+  hosts:
+    test:
+      ansible_host: 192.168.1.11
