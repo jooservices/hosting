@@ -1,7 +1,7 @@
-- hosts: toanpt_test
+- hosts: xcrawlers
   become: yes
   roles:
-  #- { role: common, tags: common }
+  #- { role: apache-exporter, tags: apache-exporter }
   #- { role: node-exporter, tags: node-exporter }
   #- { role: redis-exporter, tags: redis-exporter }
   #- { role: memcached-exporter, tags: memcached-exporter }
@@ -14,4 +14,4 @@
   #- { role: mongodb, tags: mongodb }
   #- { role: mariadb, tags: mariadb }
   #- { role: postgresql, tags: postgresql }
-  #- { role: php, tags: php }
+  - { role: php, tags: php }
