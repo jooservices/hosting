@@ -1,0 +1,15 @@
+- name: Install MongoDB
+  command: pecl -d php_suffix="{{ __php_default_version_debian }}" install mongodb
+  register: pecl_result
+  changed_when: "'already installed' not in pecl_result.stdout"
+  failed_when: "pecl_result.stderr or ('ERROR' in pecl_result.stdout)"
+
+- name: Ensure MongoDB config file is present.
+  template:
+    src: mongodb.ini.j2
+    dest: "{{ item }}/mongodb.ini"
+    owner: root
+    group: root
+    force: true
+    mode: 0644
+  with_items: "{{ php_extension_conf_paths }}"

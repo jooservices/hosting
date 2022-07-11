@@ -1,5 +1,4 @@
----
-- name: Ensure configuration directories exist.
+- name: Ensure configuration PHP directories exist.
   file:
     path: "{{ item }}"
     state: directory
@@ -20,9 +19,9 @@
   notify: restart webserver
   when: php_use_managed_ini
 
-
-- name: Copy php test file.
+- name: Copy PHP test file.
   template:
     src: test.php.j2
     dest: /var/www/html/test.php
     mode: 0644
+  when: php_enable_webserver

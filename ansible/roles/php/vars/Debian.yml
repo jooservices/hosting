@@ -37,3 +37,27 @@ __php_fpm_pool_conf_path: "{{ __php_fpm_conf_path }}/pool.d/www.conf"
 
 __php_fpm_pool_user: www-data
 __php_fpm_pool_group: www-data
+
+__required_packages:
+  - build-essential
+  - autoconf
+  - automake
+  - libtool
+  - bison
+  - pkg-config
+  - re2c
+  - libsqlite3-dev
+  - libonig-dev
+  - libxml2-dev
+  - libcurl4-openssl-dev
+  - libbz2-dev
+  - libjpeg-dev
+  - libpng-dev
+  - libxpm-dev
+  - libfreetype6-dev
+  - libgmp3-dev
+  - libmcrypt-dev
+  - libmariadbclient-dev
+  - libpspell-dev
+  - librecode-dev
+  - libssl-dev
