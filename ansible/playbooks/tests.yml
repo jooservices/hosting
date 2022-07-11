@@ -1,0 +1,17 @@
+- hosts: tests # Will load group_vars/clients.yaml
+  become: yes
+  roles:
+  #- { role: apache-exporter, tags: apache-exporter }
+  #- { role: node-exporter, tags: node-exporter }
+  #- { role: redis-exporter, tags: redis-exporter }
+  #- { role: memcached-exporter, tags: memcached-exporter }
+  #- { role: redis, tags: redis }
+  #- { role: mongodb-exporter, tags: mongodb-exporter }
+  #- { role: postgres-exporter, tags: postgres-exporter }
+  #- { role: nginx, tags: nginx }
+  #- { role: alertmanager, tags: alertmanager }
+  #- { role: memcached, tags: memcached }
+  #- { role: mongodb, tags: mongodb }
+  #- { role: mariadb, tags: mariadb }
+  #- { role: postgresql, tags: postgresql }
+  #- { role: php, tags: php }
