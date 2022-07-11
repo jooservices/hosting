@@ -33,7 +33,7 @@
     state: absent
 
 - name: Creates data directory
-  file: 
+  file:
     path: "/data/alertmanager/"
     state: directory
     owner: "{{userId}}"
@@ -41,7 +41,7 @@
     mode: 0755
 
 - name: Creates config directory
-  file: 
+  file:
     path: "/etc/alertmanager/"
     state: directory
     owner: "{{userId}}"
