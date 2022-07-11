@@ -1,0 +1,10 @@
+[Unit]
+Description=ApacheExporter
+
+[Service]
+TimeoutStartSec=0
+User=apache_exporter
+ExecStart={{ apache_exporter_bin_path }} {{ apache_exporter_options }}
+
+[Install]
+WantedBy=multi-user.target

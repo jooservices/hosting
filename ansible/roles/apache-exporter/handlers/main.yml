@@ -1,0 +1,5 @@
+---
+- name: restart apache_exporter
+  service:
+    name: apache_exporter
+    state: restarted
