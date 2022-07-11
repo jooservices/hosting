@@ -1,5 +1,5 @@
 - name: Install Redis
-  command: pecl -d php_suffix="{{ __php_default_version_debian }}" install redis
+  command: pecl -d php_suffix="{{ php_default_version_debian }}" install redis
   register: pecl_result
   changed_when: "'already installed' not in pecl_result.stdout"
   failed_when: "pecl_result.stderr or ('ERROR' in pecl_result.stdout)"

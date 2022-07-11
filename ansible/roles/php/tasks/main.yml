@@ -110,3 +110,22 @@
 
 - include_tasks: install-redis.yml
 - include_tasks: install-mongodb.yml
+
+# Composer
+- name: Download and install Composer
+  shell: curl -sS https://getcomposer.org/installer | php
+  args:
+    chdir: /usr/src/
+    creates: /usr/local/bin/composer
+    warn: false
+  become: yes
+
+- name: Add Composer to global path
+  copy:
+    dest: /usr/local/bin/composer
+    group: root
+    mode: '0755'
+    owner: root
+    src: /usr/src/composer.phar
+    remote_src: yes
+  become: yes
