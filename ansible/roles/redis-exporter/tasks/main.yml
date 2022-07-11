@@ -52,7 +52,7 @@
 
 - name: Verify redis_exporter is responding to requests.
   uri:
-    url: http://localhost:9100/
+    url: http://localhost:9121/
     return_content: true
   register: metrics_output
   failed_when: "'Metrics' not in metrics_output.content"
