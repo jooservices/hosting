@@ -41,3 +41,4 @@ redis_version: 7.0.2
 redis_install_dir: /opt/redis
 
 postgresql_exporter_version: '0.10.1'
+mongodb_version: "5.0"
