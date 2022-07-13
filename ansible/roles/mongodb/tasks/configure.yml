@@ -1,10 +1,10 @@
 ---
-- name: create mongodb group
+- name: Create MongoDB group
   group:
     name: "{{ mongodb_user }}"
     state: present
 
-- name: create mongodb user
+- name: Create MongoDB user
   user:
     name: "{{ mongodb_user }}"
     group: "{{ mongodb_user }}"

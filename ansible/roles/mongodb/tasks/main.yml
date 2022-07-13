@@ -27,6 +27,7 @@
     - "install.{{ ansible_os_family | lower }}.yml"
   tags: [mongodb]
 
+# Base configuration
 - name: Include configuration.yml
   include_tasks: configure.yml
   tags: [mongodb]
