@@ -62,10 +62,12 @@ mongodb_security_keyfile: /etc/mongodb-keyfile   # Specify path to keyfile with 
 mongodb_security_javascript_enabled: true        # Enables or disables server-side JavaScript execution
 
 ## storage Options
+# By default from MongoDB dbPath: /var/lib/mongodb
 mongodb_storage_dbpath: /data/db                 # Directory for datafiles
-mongodb_storage_dirperdb: false                  # Use one directory per DB
+mongodb_storage_dirperdb: true                  # Use one directory per DB
 
 # The storage engine for the mongod database
+# https://www.mongodb.com/docs/manual/core/storage-engines/
 mongodb_storage_engine: "wiredTiger"
 # mmapv1 specific options
 mongodb_storage_quota_enforced: false            # Limits each database to a certain number of files
@@ -124,6 +126,7 @@ mongodb_keyfile_content: |
   wR700U0LDaGGQpslGtiE56SemgoP
 
 # names and passwords for administrative users
+## Make sure generate password before using
 mongodb_user_admin_name: siteUserAdmin
 mongodb_user_admin_password: passw0rd
 
