@@ -2,7 +2,7 @@
 
 mongodb_package: mongodb-org
 mongodb_package_state: present
-mongodb_version: "4.4"
+mongodb_version: "5.0"
 mongodb_apt_key_from_url: false
 mongodb_apt_keyserver: 'hkp://keyserver.ubuntu.com:80'
 mongodb_apt_key_id:
@@ -18,8 +18,11 @@ mongodb_apt_key_url:
   "4.4": "https://www.mongodb.org/static/pgp/server-4.4.asc"
   "5.0": "https://www.mongodb.org/static/pgp/server-5.0.asc"
 
-mongodb_pymongo_from_pip: true                   # Install latest PyMongo via PIP or package manager
-mongodb_pymongo_pip_version: 3.11.3
+# Install latest PyMongo via PIP or package manager
+mongodb_pymongo_from_pip: true
+
+# https://pypi.org/project/pymongo/
+mongodb_pymongo_pip_version: 4.1.1
 
 mongodb_user_update_password: "on_create"        # MongoDB user password update default policy
 mongodb_manage_service: true
