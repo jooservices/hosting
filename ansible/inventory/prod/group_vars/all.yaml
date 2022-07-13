@@ -1,4 +1,5 @@
 ---
+# Declare variables for groups
 timezone: Asia/Ho_Chi_Minh
 ansible_port: 22
 ansible_user: soulevil
@@ -37,7 +38,8 @@ memcached_exporter_version: '0.10.0'
 mongodb_exporter_version: '0.32.0'
 mongodb_exporter_options: '--mongodb.uri=mongodb://mongodb_exporter:s3cr3tpassw0rd@127.0.0.1:27017 --collect-all'
 
-redis_version: 7.0.2
+# Redis
+redis_version: 7.0.3
 redis_install_dir: /opt/redis
 
 postgresql_exporter_version: '0.10.1'
