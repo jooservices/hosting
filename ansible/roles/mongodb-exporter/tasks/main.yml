@@ -23,7 +23,7 @@
     mode: 0755
     remote_src: true
   notify: restart mongodb_exporter
-  when: mongodb_exporter_download_check is changed
+  when: mongodb_exporter_download_check is changed # There is issue while changing version
 
 - name: Create mongodb_exporter user.
   user:
@@ -52,7 +52,7 @@
 
 - name: Verify mongodb_exporter is responding to requests.
   uri:
-    url: http://localhost:9100/
+    url: http://localhost:9216/
     return_content: true
   register: metrics_output
   failed_when: "'Metrics' not in metrics_output.content"
