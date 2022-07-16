@@ -1,4 +1,4 @@
-- name: Install Redis
+- name: Pecl install Redis
   command: pecl -d php_suffix="{{ php_default_version_debian }}" install redis
   register: pecl_result
   changed_when: "'already installed' not in pecl_result.stdout"
