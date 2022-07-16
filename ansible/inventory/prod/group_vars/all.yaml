@@ -5,6 +5,7 @@ ansible_port: 22
 ansible_user: soulevil
 
 #apt_packages:
+# Deprecated https://unix.stackexchange.com/questions/677763/why-is-net-tools-deprecated-can-i-still-use-it-without-security-issue
 #  - net-tools
 disable_apt_update: true
 swapoff: false
@@ -35,8 +36,10 @@ sysctl_config:
 node_exporter_version: '1.3.1'
 redis_exporter_version: '1.43.0'
 memcached_exporter_version: '0.10.0'
-mongodb_exporter_version: '0.32.0'
-mongodb_exporter_options: '--mongodb.uri=mongodb://mongodb_exporter:s3cr3tpassw0rd@127.0.0.1:27017 --collect-all'
+# MongoDB
+# There is issue with 0.33.0
+mongodb_exporter_version: '0.31.0'
+mongodb_exporter_options: '--mongodb.uri=mongodb://127.0.0.1:27017 --collect-all'
 
 # Redis
 redis_version: 7.0.3

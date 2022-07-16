@@ -3,17 +3,24 @@ clients: # Will be used in playbook.yaml
     staging:
       ansible_host: 192.168.1.2 # Make sure added public key for SSH before execute
 
-xcrawlers:
+xcrawlers: # XCrawler cluster
   hosts:
-    primary:
+    xcrawler:
       ansible_host: 192.168.1.4
 
-server:
+soulevil: # SoulEvil cluster
+  hosts:
+    hosting:
+      ansible_host: 192.168.1.9
+
+server: # Physical server
   hosts:
     workstation:
       ansible_host: 192.168.1.10
 
 tests: # Testing servers
   hosts:
-    test:
-      ansible_host: 192.168.1.11
+    test1:
+      ansible_host: 192.168.1.30
+    test2:
+      ansible_host: 192.168.1.31
