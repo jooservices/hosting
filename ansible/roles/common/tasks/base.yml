@@ -2,6 +2,7 @@
 - name: Set hostname
   hostname:
     #name: "{{ inventory_hostname }}.{{ svr_managed_domain }}"
+# The inventory name for the ‘current’ host being iterated over in the play
     name: "{{ inventory_hostname }}"
 
 - name: Disable swapoff
