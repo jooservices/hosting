@@ -1,0 +1,5 @@
+# Update all vms
+- hosts: vms
+  become: yes
+  roles:
+  - { role: update, tags: update }
