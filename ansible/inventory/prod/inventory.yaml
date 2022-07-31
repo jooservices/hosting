@@ -7,17 +7,10 @@ xcrawlers: # XCrawler cluster
   hosts:
     xcrawler:
       ansible_host: 192.168.1.4
-
-soulevil: # SoulEvil cluster
-  hosts:
-    hosting:
-      ansible_host: 192.168.1.9
-
-server: # Physical server
-  hosts:
-    workstation:
-      ansible_host: 192.168.1.10
-
+    xworker1:
+      ansible_host: 192.168.1.20
+    xworker2:
+      ansible_host: 192.168.1.21
 vms:
   hosts:
     barista:
@@ -25,5 +18,9 @@ vms:
       ansible_user: staging
     xcrawler:
       ansible_host: 192.168.1.4
+    xworker1:
+      ansible_host: 192.168.1.20
+    xworker2:
+      ansible_host: 192.168.1.21
     hosting:
       ansible_host: 192.168.1.9
