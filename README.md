@@ -14,6 +14,8 @@
   - [x] Redis-exporter
   - [x] Mongodb-exporter
   - [x] Postgres-exporter
+  - [x] SNMP exporter
+  - [x] Process exporter
 
 
 #### Server tuning
@@ -63,15 +65,63 @@ job: api-server
 vim /etc/prometheus/prometheus.yml
 ```
 
-![](https://i.imgur.com/CzuMOFK.png)
+```
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "/etc/prometheus/rules/*.yml"
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: 'servers'
+
+    static_configs:
+# node_exporter
+      - targets: ['192.168.1.10:9100']
+        labels:
+            instance: 'workstation'
+            service: 'node_exporter'
+# process_exporter
+      - targets: ['192.168.1.10:9256']
+        labels:
+          instance: 'workstation'
+          service: 'process_exporter'            
+# mysqld
+      - targets: ['192.168.1.10:9104']
+        labels:
+          instance: 'workstation'
+          service: 'mysqld_exporter'           
 
 * Reload new config
 
 ```
+```
 curl -s -XPOST localhost:9090/-/reload
 ```
-
-
 
 ## How to add alert rule / config routing.
 1. All alert rule store at ```/etc/prometheus/rules```
