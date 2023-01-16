@@ -25,10 +25,16 @@
   notify: restart redis_exporter
   when: redis_exporter_download_check is changed
 
-- name: Create redis_exporter user.
+- name: "Create {{ exporter }} group."
+  group:
+    name: "{{ exporter }}"
+
+- name: Create {{ exporter }} user.
   user:
-    name: redis_exporter
+    name: "{{ exporter }}"
     shell: /sbin/nologin
+    create_home: false
+    group: "{{ exporter }}"
     state: present
 
 - name: Copy the redis_exporter systemd unit file.

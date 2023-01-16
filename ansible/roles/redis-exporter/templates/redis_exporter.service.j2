@@ -1,10 +1,15 @@
 [Unit]
-Description=Prometheus exporter for Redis metrics.
+Description=Redis Exporter
 Documentation=https://github.com/oliver006/redis_exporter
 
+Wants=network-online.target
+After=network-online.target
+
 [Service]
+Restart=always
 TimeoutStartSec=0
-User=redis_exporter
+User={{ exporter }}
+Group={{ exporter }}
 ExecStart={{ redis_exporter_bin_path }} {{ redis_exporter_options }}
 
 [Install]
