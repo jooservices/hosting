@@ -1,0 +1,13 @@
+[Unit]
+Description=Prometheus SNMP Exporter
+Documentation=https://github.com/prometheus/snmp_exporter
+
+[Service]
+#Type=Simple
+TimeoutStartSec=0
+User=snmp_exporter
+Group=snmp_exporter
+ExecStart=/usr/local/bin/snmp_exporter --config.file="/usr/local/bin/snmp.yml"
+
+[Install]
+WantedBy=multi-user.target

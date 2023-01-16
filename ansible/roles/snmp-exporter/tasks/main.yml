@@ -1,0 +1,74 @@
+- name: Check current {{ exporter }} version.
+  command: "{{ bin_path }} --version"
+  failed_when: false
+  changed_when: false
+  register: version_check
+
+- name: Url
+  debug:
+    msg: "{{ download_url }}"
+
+- name: Download and unarchive {{ exporter }} into temporary location.
+  unarchive:
+    src: "{{ download_url }}"
+    dest: /tmp
+    remote_src: true
+    mode: 0755
+  when: >
+    version_check.stdout is not defined
+    or version not in version_check.stdout
+  register: download_check
+
+- name: Move {{ exporter }} binary into place.
+  copy:
+    src: "/tmp/{{ exporter }}-{{ version }}.linux-{{ arch }}/{{ exporter }}"
+    dest: "{{ bin_path }}"
+    mode: 0755
+    remote_src: true
+  notify: restart {{ exporter }}
+  when: download_check is changed
+
+- name: "Create {{ exporter }} group."
+  group:
+    name: "{{ exporter }}"
+
+- name: Create {{ exporter }} user.
+  user:
+    name: "{{ exporter }}"
+    shell: /sbin/nologin
+    create_home: false
+    group: "{{ exporter }}"
+    state: present
+
+- name: Copy the {{ exporter }} config file.
+  template:
+    src: "snmp.yml"
+    dest: "/usr/local/bin/snmp.yml"
+    mode: 0644
+  register: service
+
+- name: Copy the {{ exporter }} systemd unit file.
+  template:
+    src: "systemd.service.j2"
+    dest: "/etc/systemd/system/{{ exporter }}.service"
+    mode: 0644
+  register: service
+
+- name: Reload systemd daemon if unit file is changed.
+  systemd:
+    daemon_reload: true
+  notify: restart {{ exporter }}
+  when: service is changed
+
+- name: Ensure {{ exporter }} is running and enabled at boot.
+  service:
+    name: "{{ exporter }}"
+    state: "{{ state }}"
+    enabled: "{{ enabled }}"
+
+- name: Verify {{ exporter }} is responding to requests.
+  uri:
+    url: "http://localhost:{{ port }}/"
+    return_content: true
+  register: metrics_output
+  failed_when: "'Metrics' not in metrics_output.content"

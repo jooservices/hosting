@@ -1,0 +1,15 @@
+# default variables for the role (see Using Variables for more information).
+# See available releases: https://github.com/Lusitaniae/apache_exporter/releases/
+github_url: 'https://github.com/prometheus'
+version: '0.21.0'
+exporter: 'snmp_exporter'
+arch: 'amd64'
+download_url: "{{ github_url }}/{{ exporter }}/releases/download/v{{ version }}/{{ exporter }}-{{ version }}.linux-{{ arch }}.tar.gz"
+
+bin_path: /usr/local/bin/{{ exporter }}
+bin_options: '--config.file="/usr/local/bin/snmp.yml"'
+
+state: started
+enabled: true
+
+port: 9116
