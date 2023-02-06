@@ -1,0 +1,9 @@
+- hosts:
+    - workstation
+    - x300
+    - x300_replicate
+    - vms
+    - coffeeschool
+  become: yes
+  roles:
+  - { role: update, tags: update }
