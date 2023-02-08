@@ -1,0 +1,14 @@
+---
+# See available releases: https://github.com/ncabatoff/process-exporter
+exporter_version: '0.7.10'
+exporter_arch: 'amd64'
+exporter_download_url: https://github.com/ncabatoff/process-exporter/releases/download/v{{ exporter_version }}/process-exporter-{{ exporter_version }}.linux-{{ exporter_arch }}.tar.gz
+
+exporter_bin_path: /usr/local/bin/process-exporter
+
+exporter_options: '-config.path /etc/process_exporter/process-exporter.yaml'
+
+exporter_state: started
+exporter_enabled: true
+
+exporter: "process_exporter"

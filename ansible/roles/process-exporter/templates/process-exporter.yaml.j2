@@ -1,0 +1,47 @@
+process_names:
+  - comm:
+    # Data service responsible for storing user data
+    - memcached
+    # Couchbase cluster manager run as Erlang virtual machines -
+    # babysitter, ns_server, and ns_couchdb
+    - beam.smp
+    # Index service
+    - indexer
+    # Full-Text Search Service
+    - cbft
+    # Analytics Service
+    - cbas
+    # Couchbase Query service
+    - cbq-engine
+    # Extracts secondary key from documents
+    - projector
+    # Cross Data Center Replication (XDCR) - replicates data from one cluster to another
+    - goxdcr
+    # Utility in Go to get disk usage stats
+    - godu
+    # Process that acts as a bridge between ns_server (Erlang) and the other
+    # server components (cbq- engine, cbft, etc.)
+    - goport
+    # Service that is used to encrypt the cluster configuration stored on disk
+    - gosecrets
+    # Erlang port process (wrapper) used to talk to the saslauthd daemon for authentication purposes
+    - saslauthd-port
+    # Erlang-specific process which acts as a name server for Erlang distribution
+    - epmd
+    # Erlang-specific process used to collect CPU: 1 for ns_server VM and 1 for ns_couchdb VM
+    - cpu_sup
+    # Erlang-specific process used to collect memory usage: 1 for ns_server VM
+    # and 1 for ns_couchdb VM
+    - memsup
+    # Built-in Erlang port process that is used to perform name service lookup
+    - inet_gethost
+    # Open source tool sigar that is used to collect system information
+    - portsigar
+    # Eventing Service
+    - eventing-produc
+    # Eventing Service
+    - eventing-consum
+    - uwsgi
+    - prometheus
+    - alertmanager
+    - grafana

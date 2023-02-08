@@ -1,0 +1,91 @@
+---
+- name: Check current {{ exporter }} version.
+  command: "{{ exporter_bin_path }} --version"
+  failed_when: false
+  changed_when: false
+  register: exporter_version_check
+
+- name: Download and unarchive {{ exporter }} into temporary location.
+  unarchive:
+    src: "{{ exporter_download_url }}"
+    dest: /tmp
+    remote_src: true
+    mode: 0755
+  when: >
+    exporter_version_check.stdout is not defined
+    or exporter_version not in exporter_version_check.stdout
+  register: exporter_download_check
+
+- name: Move {{ exporter }} binary into place.
+  copy:
+    src: "/tmp/process-exporter-{{ exporter_version }}.linux-{{ exporter_arch }}/process-exporter"
+    dest: "{{ exporter_bin_path }}"
+    mode: 0755
+    remote_src: true
+  notify: restart {{ exporter }}
+  when: exporter_download_check is changed
+
+- name: Create {{ exporter }} group.
+  group:
+    name: "{{ exporter }}"
+
+- name: Create {{ exporter }} user.
+  user:
+    name: "{{ exporter }}"
+    shell: /sbin/nologin
+    create_home: false
+    group: "{{ exporter }}"
+    state: present
+
+- name: Copy the {{ exporter }} systemd unit file.
+  template:
+    src: service.j2
+    dest: "/etc/systemd/system/{{ exporter }}.service"
+    mode: 0644
+  register: exporter_service
+
+# Config file
+- name: Check directory.
+  stat:
+    path: /etc/{{ exporter }}
+  register: config_dir
+
+- name: "echo if directory already existed"
+  debug:
+    msg: "/etc/{{ exporter }} directory is already existed"
+  when: config_dir.stat.exists
+
+- name: "Ansible Create directory if not exists"
+  file:
+    path: /etc/{{ exporter }}
+    state: directory
+    mode: 0755
+    group: "{{ exporter }}"
+    owner: "{{ exporter }}"
+  when: config_dir.stat.exists == false
+
+- name: Copy the {{ exporter }} config file.
+  template:
+    src: process-exporter.yaml.j2
+    dest: /etc/{{ exporter }}/process-exporter.yaml
+    mode: 0644
+  register: exporter_config
+
+- name: Reload systemd daemon if unit file is changed.
+  systemd:
+    daemon_reload: true
+  notify: restart {{ exporter }}
+  when: exporter_service is changed
+
+- name: Ensure {{ exporter }} is running and enabled at boot.
+  service:
+    name: "{{ exporter }}"
+    state: "{{ exporter_state }}"
+    enabled: "{{ exporter_enabled }}"
+
+- name: Verify {{ exporter }} is responding to requests.
+  uri:
+    url: http://localhost:9256/
+    return_content: true
+  register: metrics_output
+  failed_when: "'Metrics' not in metrics_output.content"

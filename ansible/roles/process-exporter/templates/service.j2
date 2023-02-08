@@ -1,0 +1,15 @@
+[Unit]
+Description=Process Exporter for Prometheus.
+Documentation=https://github.com/ncabatoff/process-exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+User={{ exporter }}
+Group={{ exporter }}
+ExecStart={{ exporter_bin_path }} {{ exporter_options }}
+
+[Install]
+WantedBy=multi-user.target
