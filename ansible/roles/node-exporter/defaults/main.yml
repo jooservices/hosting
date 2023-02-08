@@ -1,12 +1,14 @@
 ---
 # See available releases: https://github.com/prometheus/node_exporter/releases/
-node_exporter_version: '1.3.1'
-node_exporter_arch: 'amd64'
-node_exporter_download_url: https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-{{ node_exporter_arch }}.tar.gz
+exporter_version: '1.5.0'
+exporter_arch: 'amd64'
+exporter_download_url: https://github.com/prometheus/node_exporter/releases/download/v{{ exporter_version }}/node_exporter-{{ exporter_version }}.linux-{{ exporter_arch }}.tar.gz
 
-node_exporter_bin_path: /usr/local/bin/node_exporter
+exporter_bin_path: /usr/local/bin/node_exporter
 
-node_exporter_options: ''
+exporter_options: ''
 
-node_exporter_state: started
-node_exporter_enabled: true
+exporter_state: started
+exporter_enabled: true
+
+exporter: 'node_exporter'

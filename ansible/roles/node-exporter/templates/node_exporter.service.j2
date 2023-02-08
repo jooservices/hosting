@@ -1,10 +1,15 @@
 [Unit]
-Description=NodeExporter
+Description=Prometheus exporter for hardware and OS metrics exposed by *NIX kernels, written in Go with pluggable metric collectors.
+Documentation=https://github.com/prometheus/node_exporter
 
 [Service]
 TimeoutStartSec=0
-User=node_exporter
-ExecStart={{ node_exporter_bin_path }} {{ node_exporter_options }}
+User={{ exporter }}
+Group={{ exporter }}
+ExecStart={{ exporter_bin_path }} {{ exporter_options }}
+ExecReload=/bin/kill -HUP $MAINPID
+TimeoutStopSec=20s
+SendSIGKILL=no
 
 [Install]
 WantedBy=multi-user.target
