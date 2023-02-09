@@ -1,6 +1,6 @@
-- name: Creating alertmanager user group
-  group: name="{{groupId}}"
-  become: true
+- name: "Creating {{groupId}} user group."
+  group:
+    name: "{{groupId}}"
 
 - name: Creating alertmanager user
   user:
@@ -9,7 +9,7 @@
     system: yes
     shell: "/sbin/nologin"
     comment: "{{userId}} nologin User"
-    createhome: "no"
+    create_home: false
     state: present
 
 - name: Download alertmanager
