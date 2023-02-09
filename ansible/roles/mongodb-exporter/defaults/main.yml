@@ -1,13 +1,16 @@
 ---
 # See available releases: https://github.com/percona/mongodb_exporter/releases
-# There is issue with 0.33.0
-mongodb_exporter_version: '0.31.0'
-mongodb_exporter_arch: 'amd64'
-mongodb_exporter_download_url: https://github.com/percona/mongodb_exporter/releases/download/v{{ mongodb_exporter_version }}/mongodb_exporter-{{ mongodb_exporter_version }}.linux-{{ mongodb_exporter_arch }}.tar.gz
+# There is issue with 0.35.0
+github_url: ' https://github.com/percona'
+version: '0.37.0'
+exporter: 'mongodb_exporter'
+arch: 'amd64'
+download_url: "{{ github_url }}/{{ exporter }}/releases/download/v{{ version }}/{{ exporter }}-{{ version }}.linux-{{ arch }}.tar.gz"
 
-mongodb_exporter_bin_path: /usr/local/bin/mongodb_exporter
+bin_path: /usr/local/bin/{{ exporter }}
+bin_options: '--mongodb.uri=mongodb://127.0.0.1:27017'
 
-mongodb_exporter_options: '--mongodb.uri=mongodb://127.0.0.1:17001'
+state: started
+enabled: true
 
-mongodb_exporter_state: started
-mongodb_exporter_enabled: true
+port: 9216

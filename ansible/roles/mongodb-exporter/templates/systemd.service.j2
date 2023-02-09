@@ -1,0 +1,13 @@
+[Unit]
+Description=MongoDB Exporter
+Documentation=https://github.com/percona/mongodb_exporter
+
+[Service]
+Type=simple
+TimeoutStartSec=0
+User={{ exporter }}
+Group={{ exporter }}
+ExecStart={{ bin_path }} {{ bin_options }}
+
+[Install]
+WantedBy=multi-user.target

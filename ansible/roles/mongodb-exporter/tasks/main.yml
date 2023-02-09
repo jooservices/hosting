@@ -1,58 +1,61 @@
----
-- name: Check current mongodb_exporter version.
-  command: "{{ mongodb_exporter_bin_path }} --version"
+- name: Check current {{ exporter }} version.
+  command: "{{ bin_path }} --version"
   failed_when: false
   changed_when: false
-  register: mongodb_exporter_version_check
+  register: version_check
 
-- name: Download and unarchive mongodb_exporter into temporary location.
+- name: Url
+  debug:
+    msg: "{{ download_url }}"
+
+- name: Download and unarchive {{ exporter }} into temporary location.
   unarchive:
-    src: "{{ mongodb_exporter_download_url }}"
+    src: "{{ download_url }}"
     dest: /tmp
     remote_src: true
     mode: 0755
   when: >
-    mongodb_exporter_version_check.stdout is not defined
-    or mongodb_exporter_version not in mongodb_exporter_version_check.stdout
-  register: mongodb_exporter_download_check
+    version_check.stdout is not defined
+    or version not in version_check.stdout
+  register: download_check
 
-- name: Move mongodb_exporter binary into place.
+- name: Move {{ exporter }} binary into place.
   copy:
-    src: "/tmp/mongodb_exporter-{{ mongodb_exporter_version }}.linux-{{ mongodb_exporter_arch }}/mongodb_exporter"
-    dest: "{{ mongodb_exporter_bin_path }}"
+    src: "/tmp/{{ exporter }}-{{ version }}.linux-{{ arch }}/{{ exporter }}"
+    dest: "{{ bin_path }}"
     mode: 0755
     remote_src: true
-  notify: restart mongodb_exporter
-  when: mongodb_exporter_download_check is changed # There is issue while changing version
+  notify: restart {{ exporter }}
+  when: download_check is changed
 
-- name: Create mongodb_exporter user.
+- name: Create {{ exporter }} user.
   user:
-    name: mongodb_exporter
+    name: "{{ exporter }}"
     shell: /sbin/nologin
     state: present
 
-- name: Copy the mongodb_exporter systemd unit file.
+- name: Copy the {{ exporter }} systemd unit file.
   template:
-    src: mongodb_exporter.service.j2
-    dest: /etc/systemd/system/mongodb_exporter.service
+    src: "systemd.service.j2"
+    dest: "/etc/systemd/system/{{ exporter }}.service"
     mode: 0644
-  register: mongodb_exporter_service
+  register: service
 
 - name: Reload systemd daemon if unit file is changed.
   systemd:
     daemon_reload: true
-  notify: restart mongodb_exporter
-  when: mongodb_exporter_service is changed
+  notify: restart {{ exporter }}
+  when: service is changed
 
-- name: Ensure mongodb_exporter is running and enabled at boot.
+- name: Ensure {{ exporter }} is running and enabled at boot.
   service:
-    name: mongodb_exporter
-    state: "{{ mongodb_exporter_state }}"
-    enabled: "{{ mongodb_exporter_enabled }}"
+    name: "{{ exporter }}"
+    state: "{{ state }}"
+    enabled: "{{ enabled }}"
 
-- name: Verify mongodb_exporter is responding to requests.
+- name: Verify {{ exporter }} is responding to requests.
   uri:
-    url: http://localhost:9216/
+    url: "http://localhost:{{ port }}/"
     return_content: true
   register: metrics_output
   failed_when: "'Metrics' not in metrics_output.content"

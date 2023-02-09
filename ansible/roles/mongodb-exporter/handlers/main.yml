@@ -1,5 +1,5 @@
 ---
-- name: restart mongodb_exporter
+- name: restart {{ exporter }}
   service:
-    name: mongodb_exporter
+    name: "{{ exporter }}"
     state: restarted
