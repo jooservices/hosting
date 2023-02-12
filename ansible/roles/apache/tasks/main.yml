@@ -1,0 +1,11 @@
+# the main list of tasks that the role executes.
+
+#- name: Install latest version of Apache
+#  apt: name=apache2 update_cache=yes state=latest
+
+- name: "Changing owner to {{ apache_user }}"
+  file:
+    path: "{{ www_dir }}"
+    state: directory
+    recurse: yes
+    owner: "{{ apache_user }}"

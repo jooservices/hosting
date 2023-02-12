@@ -1,0 +1,4 @@
+# default lower priority variables for this role
+www_dir: '/var/www'
+apache_user: 'www-data'
+apache_group: 'www-data'
