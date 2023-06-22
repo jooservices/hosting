@@ -1,5 +1,5 @@
 ---
-- name: restart redis_exporter
+- name: restart {{ exporter }}
   service:
-    name: redis_exporter
+    name: "{{ exporter }}"
     state: restarted

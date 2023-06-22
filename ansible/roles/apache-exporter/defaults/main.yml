@@ -1,12 +1,15 @@
----
+# default variables for the role (see Using Variables for more information).
 # See available releases: https://github.com/Lusitaniae/apache_exporter/releases/
-apache_exporter_version: '0.11.0'
-apache_exporter_arch: 'amd64'
-apache_exporter_download_url: https://github.com/Lusitaniae/apache_exporter/releases/download/v{{ apache_exporter_version }}/apache_exporter-{{ apache_exporter_version }}.linux-{{ apache_exporter_arch }}.tar.gz
+github_url: 'https://github.com/Lusitaniae'
+version: '0.11.0'
+exporter: 'apache_exporter'
+arch: 'amd64'
+download_url: "{{ github_url }}/{{ exporter }}/releases/download/v{{ version }}/{{ exporter }}-{{ version }}.linux-{{ arch }}.tar.gz"
 
-apache_exporter_bin_path: /usr/local/bin/apache_exporter
+bin_path: /usr/local/bin/{{ exporter }}
+bin_options: ''
 
-apache_exporter_options: ''
+state: started
+enabled: true
 
-apache_exporter_state: started
-apache_exporter_enabled: true
+port: 9117

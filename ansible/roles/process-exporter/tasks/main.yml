@@ -11,10 +11,10 @@
     dest: /tmp
     remote_src: true
     mode: 0755
-  when: >
-    exporter_version_check.stdout is not defined
-    or exporter_version not in exporter_version_check.stdout
-  register: exporter_download_check
+#  when: >
+#    exporter_version_check.stdout is not defined
+#    or exporter_version not in exporter_version_check.stdout
+#  register: exporter_download_check
 
 - name: Move {{ exporter }} binary into place.
   copy:
@@ -23,19 +23,20 @@
     mode: 0755
     remote_src: true
   notify: restart {{ exporter }}
-  when: exporter_download_check is changed
+#  when: exporter_download_check is changed
 
 - name: Create {{ exporter }} group.
   group:
     name: "{{ exporter }}"
 
-- name: Create {{ exporter }} user.
+- name: Create "{{ exporter }}" user.
   user:
     name: "{{ exporter }}"
+    group: "{{ exporter }}"
     shell: /sbin/nologin
     create_home: false
-    group: "{{ exporter }}"
     state: present
+    system: true
 
 - name: Copy the {{ exporter }} systemd unit file.
   template:

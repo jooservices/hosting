@@ -2,7 +2,7 @@
 # See available releases: https://github.com/percona/mongodb_exporter/releases
 # There is issue with 0.35.0
 github_url: ' https://github.com/percona'
-version: '0.37.0'
+version: '2.37.0'
 exporter: 'mongodb_exporter'
 arch: 'amd64'
 download_url: "{{ github_url }}/{{ exporter }}/releases/download/v{{ version }}/{{ exporter }}-{{ version }}.linux-{{ arch }}.tar.gz"

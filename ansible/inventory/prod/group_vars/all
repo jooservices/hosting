@@ -1,0 +1,2 @@
+ansible_user: soulevil
+ansible_ssh_private_key_file: /Users/vietvu/.ssh/id_rsa

@@ -28,11 +28,18 @@
   notify: restart {{ exporter }}
   when: download_check is changed
 
-- name: Create {{ exporter }} user.
+- name: Create "{{ exporter }}" group.
+  group:
+    name: "{{ exporter }}"
+
+- name: Create "{{ exporter }}" user.
   user:
     name: "{{ exporter }}"
+    group: "{{ exporter }}"
     shell: /sbin/nologin
+    create_home: false
     state: present
+    system: true
 
 - name: Copy the {{ exporter }} systemd unit file.
   template:

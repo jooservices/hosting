@@ -1,0 +1,13 @@
+[Unit]
+Description=Apache Exporter for Prometheus
+Documentation=https://github.com/prometheus/node_exporter
+
+[Service]
+Type=Simple
+TimeoutStartSec=0
+User={{ exporter }}
+Group={{ exporter }}
+ExecStart={{ bin_path }} {{ bin_options }}
+
+[Install]
+WantedBy=multi-user.target

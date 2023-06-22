@@ -1,29 +1,29 @@
 ---
-- name: Check current redis_exporter version.
-  command: "{{ redis_exporter_bin_path }} --version"
+- name: Check current {{ exporter }} version.
+  command: "{{ exporter_bin_path }} --version"
   failed_when: false
   changed_when: false
-  register: redis_exporter_version_check
+  register: exporter_version_check
 
-- name: Download and unarchive redis_exporter into temporary location.
+- name: Download and unarchive {{ exporter }} into temporary location.
   unarchive:
-    src: "{{ redis_exporter_download_url }}"
+    src: "{{ exporter_download_url }}"
     dest: /tmp
     remote_src: true
     mode: 0755
   when: >
-    redis_exporter_version_check.stdout is not defined
-    or redis_exporter_version not in redis_exporter_version_check.stdout
-  register: redis_exporter_download_check
+    exporter_version_check.stdout is not defined
+    or exporter_version not in exporter_version_check.stdout
+  register: exporter_download_check
 
-- name: Move redis_exporter binary into place.
+- name: Move {{ exporter }} binary into place.
   copy:
-    src: "/tmp/redis_exporter-v{{ redis_exporter_version }}.linux-{{ redis_exporter_arch }}/redis_exporter"
-    dest: "{{ redis_exporter_bin_path }}"
+    src: "/tmp/redis_exporter-v{{ exporter_version }}.linux-{{ exporter_arch }}/{{ exporter }}"
+    dest: "{{ exporter_bin_path }}"
     mode: 0755
     remote_src: true
-  notify: restart redis_exporter
-  when: redis_exporter_download_check is changed
+  notify: restart {{ exporter }}
+  when: exporter_download_check is changed
 
 - name: "Create {{ exporter }} group."
   group:
@@ -37,26 +37,26 @@
     group: "{{ exporter }}"
     state: present
 
-- name: Copy the redis_exporter systemd unit file.
+- name: Copy the {{ exporter }} systemd unit file.
   template:
-    src: redis_exporter.service.j2
-    dest: /etc/systemd/system/redis_exporter.service
+    src: service.j2
+    dest: /etc/systemd/system/{{ exporter }}.service
     mode: 0644
-  register: redis_exporter_service
+  register: exporter_service
 
 - name: Reload systemd daemon if unit file is changed.
   systemd:
     daemon_reload: true
-  notify: restart redis_exporter
-  when: redis_exporter_service is changed
+  notify: restart {{ exporter }}
+  when: exporter_service is changed
 
-- name: Ensure redis_exporter is running and enabled at boot.
+- name: Ensure {{ exporter }} is running and enabled at boot.
   service:
-    name: redis_exporter
-    state: "{{ redis_exporter_state }}"
-    enabled: "{{ redis_exporter_enabled }}"
+    name: "{{ exporter }}"
+    state: "{{ exporter_state }}"
+    enabled: "{{ exporter_enabled }}"
 
-- name: Verify redis_exporter is responding to requests.
+- name: Verify {{ exporter }} is responding to requests.
   uri:
     url: http://localhost:9121/
     return_content: true

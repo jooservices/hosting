@@ -1,9 +1,7 @@
 - hosts:
-    - workstation
+    - physical
     - x300
-    - x300_replicate
-    - vms
-    - coffeeschool
+    - workstation
   become: yes
   roles:
-  - { role: update, tags: update }
+    - { role: update, tags: update }

@@ -1,0 +1,58 @@
+---
+- name: Check current mysqld_exporter version.
+  command: "{{ mysqld_exporter_bin_path }} --version"
+  failed_when: false
+  changed_when: false
+  register: mysqld_exporter_version_check
+
+- name: Download and unarchive mysqld_exporter into temporary location.
+  unarchive:
+    src: "{{ mysqld_exporter_download_url }}"
+    dest: /tmp
+    remote_src: true
+    mode: 0755
+  when: >
+    mysqld_exporter_version_check.stdout is not defined
+    or mysqld_exporter_version not in mysqld_exporter_version_check.stdout
+  register: mysqld_exporter_download_check
+
+- name: Move mysqld_exporter binary into place.
+  copy:
+    src: "/tmp/mysqld_exporter-{{ mysqld_exporter_version }}.linux-{{ mysqld_exporter_arch }}/mysqld_exporter"
+    dest: "{{ mysqld_exporter_bin_path }}"
+    mode: 0755
+    remote_src: true
+  notify: restart mysqld_exporter
+  when: mysqld_exporter_download_check is changed
+
+- name: Create mysqld_exporter user.
+  user:
+    name: mysqld_exporter
+    shell: /sbin/nologin
+    state: present
+
+- name: Copy the mysqld_exporter systemd unit file.
+  template:
+    src: mysqld_exporter.service.j2
+    dest: /etc/systemd/system/mysqld_exporter.service
+    mode: 0644
+  register: mysqld_exporter_service
+
+- name: Reload systemd daemon if unit file is changed.
+  systemd:
+    daemon_reload: true
+  notify: restart mysqld_exporter
+  when: mysqld_exporter_service is changed
+
+- name: Ensure mysqld_exporter is running and enabled at boot.
+  service:
+    name: mysqld_exporter
+    state: "{{ mysqld_exporter_state }}"
+    enabled: "{{ mysqld_exporter_enabled }}"
+
+- name: Verify mysqld_exporter is responding to requests.
+  uri:
+    url: http://localhost:9104/
+    return_content: true
+  register: metrics_output
+  failed_when: "'Metrics' not in metrics_output.content"

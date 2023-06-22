@@ -1,5 +1,5 @@
 ---
-- name: restart apache_exporter
+- name: restart {{ exporter }}
   service:
-    name: apache_exporter
+    name: "{{ exporter }}"
     state: restarted

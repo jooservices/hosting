@@ -10,7 +10,7 @@ Restart=always
 TimeoutStartSec=0
 User={{ exporter }}
 Group={{ exporter }}
-ExecStart={{ redis_exporter_bin_path }} {{ redis_exporter_options }}
+ExecStart={{ exporter_bin_path }} {{ exporter_options }}
 
 [Install]
 WantedBy=multi-user.target
