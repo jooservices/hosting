@@ -1,0 +1,5 @@
+---
+- name: restart {{ exporter_name }}
+  service:
+    name: "{{ exporter_name }}"
+    state: restarted

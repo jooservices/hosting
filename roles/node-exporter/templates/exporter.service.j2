@@ -3,8 +3,8 @@ Description=NodeExporter
 
 [Service]
 TimeoutStartSec=0
-User=node_exporter
-ExecStart={{ node_exporter_bin_path }} {{ node_exporter_options }}
+User={{ exporter_user }}
+ExecStart={{ exporter_bin_path }} {{ exporter_options }}
 
 [Install]
 WantedBy=multi-user.target

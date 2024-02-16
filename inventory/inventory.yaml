@@ -20,3 +20,7 @@ xcrawler:
     xcrawler1:
     xcrawler2:
     xcrawler3:
+
+testing:
+  hosts:
+    ubuntu
