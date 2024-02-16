@@ -1,0 +1,5 @@
+---
+- hosts: gatekeeper,esxi,monitor,xcrawler
+  become: yes
+  roles:
+    - { role: update, tags: update }

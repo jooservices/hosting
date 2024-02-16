@@ -1,0 +1,22 @@
+---
+gatekeeper:
+  hosts:
+    115.79.25.9
+
+esxi:
+  hosts:
+    smb:
+    hosting:
+    database:
+    redis:
+
+monitor:
+  hosts:
+    monitor
+
+xcrawler:
+  hosts:
+    xcrawler:
+    xcrawler1:
+    xcrawler2:
+    xcrawler3:
