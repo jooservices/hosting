@@ -3,6 +3,8 @@ Ansible is an open source community project sponsored by Red Hat, it's the simpl
 
 ### [Install Ansible](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-ansible-on-ubuntu-20-04)
 - `sudo apt install ansible`
+For MacOS
+- `brew install ansible`
 
 ### Directories
 - [Inventory](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)

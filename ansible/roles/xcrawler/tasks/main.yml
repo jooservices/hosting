@@ -1,39 +1,19 @@
-- name: Install git
-  apt:
-    name: git
-    state: present
-    update_cache: yes
+#- name: Install XCrawler
+#  become_user: joos
+#  shell: |
+#    git clone https://github.com/jooservices/XCrawler
+#    cd /home/joos/XCrawler
+#    composer install
 
-- name: Clone XCrawler
-  become_user: "{{ansible_user}}"
-  git:
-    repo: "{{ github_url}}"
-    dest: /home/{{ansible_user}}/XCrawler
+- name: Setup Supervisor
+  ansible.builtin.template:
+    src: supervisor.xcrawler.conf.j2
+    dest: /etc/supervisor/conf.d/xcrawler.conf
+    group: root
+    setype: root
+    mode: 0640
 
-- name: Checkout master
-  become_user: "{{ansible_user}}"
-  shell:
-    chdir: ~/XCrawler
-    cmd: git checkout -f {{default_branch}}
-
-- name: Pull
-  become_user: "{{ansible_user}}"
-  shell:
-    chdir: ~/XCrawler
-    cmd: git pull
-
-- name: Copy .env
-  become_user: "{{ansible_user}}"
-  template:
-    src: .env
-    dest: ~/XCrawler
-    owner: "{{ansible_user}}"
-    group: "{{ansible_user}}"
-    force: true
-    mode: 0644
-
-- name: Composer install
-  become_user: "{{ansible_user}}"
-  shell:
-    chdir: ~/XCrawler
-    cmd: composer install
+- name: Stop service supervisor
+  ansible.builtin.service:
+    name: supervisor
+    state: stopped

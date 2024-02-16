@@ -1,0 +1,19 @@
+gatekeeper:
+  hosts:
+    115.79.25.9
+
+esxi:
+  hosts:
+    192.168.1.9 # gatekeeper
+
+monitor:
+  hosts:
+    192.168.1.12
+
+xcrawler:
+  hosts:
+    192.168.1.13
+
+testing:
+  hosts:
+    ubuntu

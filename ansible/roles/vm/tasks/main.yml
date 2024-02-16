@@ -1,0 +1,37 @@
+- name: set up sudoers
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    search_string: "{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL"
+    insertbefore: '%sudo ALL=(ALL:ALL) ALL'
+    line: "{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL"
+
+- name: lvextend
+  ansible.builtin.shell: |
+    sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+  ignore_errors: yes
+  register: shell
+- debug: var=shell
+
+- name: resize2fs
+  ansible.builtin.shell: |
+    sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+  ignore_errors: yes
+  register: shell
+- debug: var=shell
+
+- name: setup time
+  ansible.builtin.shell: |
+    sudo timedatectl set-timezone Asia/Ho_Chi_Minh
+    sudo timedatectl set-ntp on
+  register: shell
+- debug: var=shell
+
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/shell_module.html
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+- name: Show IP
+  become_user: "{{ ansible_user }}"
+  command: whoami
+  register: cat
+- debug: var=cat.stdout_lines
+
+

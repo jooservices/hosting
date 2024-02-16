@@ -1,6 +1,11 @@
-- hosts: tests # Will load group_vars/clients.yaml
+- hosts: testing # Will load group_vars/testing.yaml
   become: yes
   roles:
+#    - { role: update, tags: update }
+#    - { role: vm, tags: vm }
+#    - { role: php, tags: php }
+    - { role: supervisor, tags: supervisor }
+    - { role: xcrawler, tags: xcrawler }
   #- { role: apache-exporter, tags: apache-exporter }
   #- { role: node-exporter, tags: node-exporter }
   #- { role: redis-exporter, tags: redis-exporter }
